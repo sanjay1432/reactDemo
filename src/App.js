@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, useEffect } from "react";
+import { BrowserRouter, useHistory } from "react-router-dom";
+import "./App.css";
+import "./sass/styles.scss";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
+import ROUTES, { RenderRoutes } from "./routes";
+import { GlobalProvider } from "./plugins/globalContext";
+import Root from "./Root";
+class App extends Component {
+  componentDidMount() {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://use.fontawesome.com/releases/v5.14.0/js/all.js";
+    this.div.appendChild(script);
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+    return (
+      <div ref={(el) => (this.div = el)}>
+        <BrowserRouter>
+          <Root />
+        </BrowserRouter>
+      </div>
+    );
+  }
 }
 
+export function Provider() {
+  return (
+    <GlobalProvider>
+      <Navbar />
+
+      <section className="section">
+        <RenderRoutes routes={ROUTES} />
+      </section>
+      <Footer />
+    </GlobalProvider>
+  );
+}
 export default App;
