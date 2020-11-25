@@ -2,10 +2,7 @@ import axios from "axios";
 import { axiosInstance } from "../plugins/axios";
 export default class Auth {
   getAllUsers() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`).then((res) => {
-      const persons = res.data;
-      console.log(persons);
-    });
+    return axios.get(`https://jsonplaceholder.typicode.com/users`);
   }
 
   saveUser(data) {
@@ -19,5 +16,8 @@ export default class Auth {
   }
   uploadProfile(data) {
     return axiosInstance.post(`/files/uploadFile`, data);
+  }
+  verifyEmail(data) {
+    return axiosInstance.post(`/email/verify`, data);
   }
 }

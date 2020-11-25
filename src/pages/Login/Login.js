@@ -69,7 +69,11 @@ class Login extends Component {
       const [state, setState] = this.context;
       setState((previoustate) => ({ ...previoustate, authUser }));
       this.toggleAlert();
-      this.props.history.push("/");
+      if (authUser.active) {
+        this.props.history.push("/");
+      } else {
+        this.props.history.push("/profile");
+      }
     } catch (err) {
       this.alertTitle = err.response
         ? err.response.data

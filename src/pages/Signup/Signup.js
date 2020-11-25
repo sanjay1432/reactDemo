@@ -16,7 +16,6 @@ class Signup extends Component {
       email: { required: true },
       password: { required: true },
       dob: { required: true },
-      phoneNumbers: { required: true },
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -45,6 +44,10 @@ class Signup extends Component {
       payload[key] = value.value;
     }
     try {
+      const email = {
+        id: payload.email,
+      };
+      payload["email"] = email;
       const saveduser = await this.auth.saveUser(payload);
     } catch (err) {
       if (err.response.status === 409) {
@@ -93,36 +96,29 @@ class Signup extends Component {
             Become a registered user {this.mongoErrorkeyValue}
           </p>
           <form onSubmit={this.handleSubmit}>
-            <InputField
-              type="text"
-              class="is-hovered"
-              id="username"
-              min="3"
-              max="10"
-              hint="username must be > 3  & < 10 charcters"
-              placeholder="username"
-              leftIcon="fa-user"
-              childChange={(e) => this.handleChildChange(e, "username")}
-            />
-            <InputField
-              type="email"
-              class="is-hovered"
-              id="email"
-              placeholder="email"
-              hint="valid email required!"
-              leftIcon="fa-envelope"
-              childChange={(e) => this.handleChildChange(e, "email")}
-            />
-            <InputField
-              type="password"
-              class="is-hovered"
-              id="password"
-              min="6"
-              hint="password must be greater than 6 charcters "
-              placeholder="password"
-              leftIcon="fa-key"
-              childChange={(e) => this.handleChildChange(e, "password")}
-            />
+            <div className="field-body ">
+              <InputField
+                type="text"
+                class="is-hovered"
+                id="username"
+                min="3"
+                max="10"
+                hint="username must be > 3  & < 10 charcters"
+                placeholder="username"
+                leftIcon="fa-user"
+                childChange={(e) => this.handleChildChange(e, "username")}
+              />
+              <InputField
+                type="email"
+                class="is-hovered"
+                id="email"
+                placeholder="email"
+                hint="valid email required!"
+                leftIcon="fa-envelope"
+                childChange={(e) => this.handleChildChange(e, "email")}
+              />
+            </div>
+
             <div className="field-body ">
               <InputField
                 type="date"
@@ -132,7 +128,18 @@ class Signup extends Component {
                 placeholder="DOB"
                 childChange={(e) => this.handleChildChange(e, "dob")}
               />
-              &nbsp;
+
+              <InputField
+                type="password"
+                class="is-hovered"
+                id="password"
+                min="6"
+                hint="password must be greater than 6 charcters "
+                placeholder="password"
+                leftIcon="fa-key"
+                childChange={(e) => this.handleChildChange(e, "password")}
+              />
+              {/* &nbsp;
               <InputField
                 type="text"
                 class="is-hovered"
@@ -142,7 +149,7 @@ class Signup extends Component {
                 placeholder="Phone Number"
                 leftIcon="fa-phone"
                 childChange={(e) => this.handleChildChange(e, "phoneNumbers")}
-              />
+              /> */}
             </div>
 
             {this.mongoErrorkeyValue

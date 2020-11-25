@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./Alert.css";
 const Alert = ({ children, closeAlert, alertState, title, alertClass }) => {
-  console.log(alertState);
   if (!alertState) {
     return null;
   }

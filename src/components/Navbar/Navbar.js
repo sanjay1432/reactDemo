@@ -84,9 +84,9 @@ function AuthButtons() {
   if (state?.authUser) {
     return (
       <div className="buttons">
-        <a className="button is-info" href="/Profile">
-          <strong>Profile</strong>
-        </a>
+        <NavLink className="navbar-item is-info" to="/Profile">
+          Profile
+        </NavLink>
         <button className="button is-warning" onClick={logout}>
           Log out
         </button>

@@ -24,7 +24,7 @@ const Modal = ({ children, closeModal, modalState, title }) => {
         </footer> */}
       </div>
       <button
-        class="modal-close is-large"
+        className="modal-close is-large"
         aria-label="close"
         onClick={closeModal}
       ></button>
