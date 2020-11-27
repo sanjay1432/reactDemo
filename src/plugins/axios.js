@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
   },
   function (error) {
     console.log(error);
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       clearTimeout(refreshTokenTimeout);
       localStorage.removeItem("bearer");
       localStorage.removeItem("store");

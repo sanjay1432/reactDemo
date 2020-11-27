@@ -1,8 +1,8 @@
-import axios from "axios";
+
 import { axiosInstance } from "../plugins/axios";
 export default class Auth {
   getAllUsers() {
-    return axios.get(`https://jsonplaceholder.typicode.com/users`);
+    return axiosInstance.get(`users/all`);
   }
 
   saveUser(data) {

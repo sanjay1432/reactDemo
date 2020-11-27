@@ -78,6 +78,7 @@ function AuthButtons() {
   async function logout() {
     await setState((previoustate) => ({ ...previoustate, authUser: null }));
     localStorage.removeItem("bearer");
+    localStorage.removeItem("chatUser");
     history.push("/Login");
   }
   // console.log("auth", state.authUser);
@@ -95,12 +96,13 @@ function AuthButtons() {
   } else {
     return (
       <div className="buttons">
-        <a className="button is-primary" href="/Signup">
-          <strong>Sign up</strong>
-        </a>
-        <a className="button is-light" href="/Login">
-          Log in
-        </a>
+         <NavLink className="button is-primary" to="/Signup">
+         <strong>Sign up</strong>
+        </NavLink>
+        <NavLink className="button is-light" to="/Login">
+         <strong> Log in</strong>
+        </NavLink>
+       
       </div>
     );
   }

@@ -6,6 +6,7 @@ import Home from "./pages/Home/home";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
+import Chat from "./pages/Chat/Chat";
 const ROUTES = [
   { path: "/", key: "ROOT", exact: true, component: Home },
   {
@@ -33,6 +34,13 @@ const ROUTES = [
     exact: false,
     auth: true,
     component: Profile,
+  },
+  {
+    path: "/Chat",
+    key: "APP_PAGE",
+    exact: false,
+    auth: true,
+    component: Chat,
   },
   // {
   //   path: "/app",

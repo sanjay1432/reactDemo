@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import logo from "../../logo.svg";
 import "./home.css";
 import Auth from "../../services/auth.service";
 import Search from "../../components/Search/Search";
 import { GlobalContext } from "../../plugins/globalContext";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
 class Home extends Component {
   static contextType = GlobalContext;
 
@@ -11,8 +12,19 @@ class Home extends Component {
     super(props);
     this.Auth = new Auth();
     this.state = { persons: [] };
-    this.user = context.find((store) => store.authUser).authUser;
+    this.user = context.find((store) => store?.authUser)?.authUser;
+    this.onChatInit = this.onChatInit.bind(this);
     console.log("LoggedIN ", this.user);
+    if(this.user) {
+      const client = new W3CWebSocket('ws://127.0.0.1:8000');
+
+      client.onopen = function() {
+        console.log("ok")
+      };
+      client.onmessage  = function(message) {
+        console.log(message)
+      };
+    }
   }
   componentDidMount() {
     this.UserList();
@@ -20,6 +32,12 @@ class Home extends Component {
   async UserList() {
     const result = await this.Auth.getAllUsers();
     this.setState({ persons: result.data });
+  }
+  onChatInit(user) {
+    this.props.history.push({
+      pathname: "/Chat",
+      data: user, // your data array of objects
+    });
   }
   render() {
     return (
@@ -30,7 +48,7 @@ class Home extends Component {
           </section>
         </div>
         <div className="columns is-desktop is-multiline p-2 m-4">
-          <GridLayout users={this.state.persons} />
+          <GridLayout users={this.state.persons} onChatInit={this.onChatInit} />
         </div>
       </div>
     );
@@ -38,16 +56,22 @@ class Home extends Component {
 }
 
 function GridLayout(props) {
-  console.log(props);
+  function onChat(user) {
+    props.onChatInit(user);
+  }
   return props.users.map((user, i) => {
     return (
       <div className="column is-2" key={i}>
-        <UserCard user={user} />
+        <UserCard user={user} onChatSelect={onChat} />
       </div>
     );
   });
 }
 function UserCard(data) {
+  function onChatUser() {
+    localStorage.removeItem("chatUser");
+    data.onChatSelect(data.user);
+  }
   return (
     <div className="card">
       <div className="card-image">
@@ -61,8 +85,8 @@ function UserCard(data) {
       <div className="card-content">
         <div className="media">
           <div className="media-content">
-            <p className="title is-6">{data.user.name}</p>
-            <p className="subtitle is-6">@johnsmith</p>
+            <p className="title is-6">{data.user.username}</p>
+            <p className="subtitle is-7">{data.user.email.id}</p>
           </div>
         </div>
       </div>
@@ -75,7 +99,7 @@ function UserCard(data) {
           </span>
         </p>
         <p className="card-footer-item">
-          <span className="icon">
+          <span className="icon" onClick={onChatUser}>
             <i className="fas fa-comments"></i>
           </span>
         </p>

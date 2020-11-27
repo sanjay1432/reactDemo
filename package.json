@@ -12,7 +12,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.4"
+    "react-scripts": "3.4.4",
+    "websocket": "^1.0.32"
   },
   "scripts": {
     "css-build": "node-sass --omit-source-map-url src/sass/styles.scss src/css/styles.css",
