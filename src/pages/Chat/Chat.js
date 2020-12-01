@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import { GlobalContext } from "../../plugins/globalContext";
 import "./Chat.css";
+import Ws from "../../services/ws.service"
 class Chat extends Component {
   static contextType = GlobalContext;
-
+  
   constructor(props, context) {
     super(props);
-    this.state = { message: "", msgList: [] };
+    this.wss = new Ws()
+    this.state = { message: "", msgList: []};
     this.sendMessage = this.sendMessage.bind(this);
-    this.user = context.find((store) => store.authUser).authUser;
+    this.user = context.find((store) => store?.authUser).authUser;
     console.log(this.user);
     this.handleChange = this.handleChange.bind(this);
+    this.reciever = this.handleChange.bind(this);
     this._handleKeyDown = this._handleKeyDown.bind(this);
+
+    const { data } = props.location;
+    this.reciever = data ? data : JSON.parse(localStorage.getItem("reciever"));
+   
+    localStorage.setItem("reciever", JSON.stringify(this.reciever));
+
   }
   handleChange({ target }) {
     this.setState({
@@ -52,17 +61,16 @@ class Chat extends Component {
         });
         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }, 2000);
+     const roomId = `${this.user.username}${this.reciever.username}`
+     this.wss.sendMsg(roomId, this.state.message)
   }
   render() {
-    const { data } = this.props.location;
-    let chatUser = data ? data : JSON.parse(localStorage.getItem("chatUser"));
-    localStorage.setItem("chatUser", JSON.stringify(chatUser));
-
+  
     return (
       <div className="container">
         <div className="card  p-2  m-4">
           <p className="card-header-title">
-            {this.user.username} is chatting with {chatUser?.username}
+            {this.user.username} is chatting with {this.reciever?.username}
           </p>
 
           <div className="card-content chat-content">
@@ -76,7 +84,7 @@ class Chat extends Component {
               className="input is-rounded"
               name="message"
               type="text"
-              defaultValue={this.state.message}
+              // defaultValue={this.state.message}
               value = {this.state.message}
               placeholder="Start Typing here ..."
               onChange={this.handleChange}
